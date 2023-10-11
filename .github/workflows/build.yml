@@ -26,17 +26,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64, i686]
-        threads: [posix, win32, mcf]
-        exceptions: [seh, dwarf]
+        arch: [x86_64]
+        threads: [posix]
+        exceptions: [seh]
         msvcrt: [msvcrt, ucrt]
-        exclude:
-          - arch: x86_64
-            exceptions: dwarf
-          - arch: i686
-            exceptions: seh
-          - threads: mcf
-            msvcrt: msvcrt
 
     steps:
     - uses: actions/checkout@v2
