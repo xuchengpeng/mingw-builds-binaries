@@ -22,7 +22,7 @@ jobs:
 
   build:
     needs: split-tag
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -32,7 +32,7 @@ jobs:
         msvcrt: [msvcrt, ucrt]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         repository: 'niXman/mingw-builds'
         ref: 'develop'
@@ -58,10 +58,10 @@ jobs:
         --enable-languages=c,c++,fortran
 
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: 'archives'
-        path: c:/buildroot/archives/
+        name: gcc-${{ needs.split-tag.outputs.gcc-version }}-${{ matrix.arch }}-${{ matrix.threads }}-${{ matrix.exceptions }}-${{ matrix.msvcrt }}-rt_${{ needs.split-tag.outputs.rt-version }}-rev${{ needs.split-tag.outputs.mingw-rev }}
+        path: c:/buildroot/archives/*.7z
 
   release:
     runs-on: ubuntu-latest
@@ -69,13 +69,14 @@ jobs:
 
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: 'archives'
         path: ./
+        pattern: gcc-*
+        merge-multiple: true
 
     - name: Upload to Release
       id: upload_to_release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: "*.7z"
