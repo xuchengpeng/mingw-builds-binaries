@@ -32,7 +32,7 @@ jobs:
         msvcrt: [msvcrt, ucrt]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         repository: 'niXman/mingw-builds'
         ref: 'develop'
@@ -59,7 +59,7 @@ jobs:
         --enable-languages=c,c++,fortran
 
     - name: Upload
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: gcc-${{ needs.split-tag.outputs.gcc-version }}-${{ matrix.arch }}-${{ matrix.threads }}-${{ matrix.exceptions }}-${{ matrix.msvcrt }}-rt_${{ needs.split-tag.outputs.rt-version }}-rev${{ needs.split-tag.outputs.mingw-rev }}
         path: c:/buildroot/archives/*.7z
@@ -70,7 +70,7 @@ jobs:
 
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         path: ./
         pattern: gcc-*
